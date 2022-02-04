@@ -7,7 +7,7 @@ var techieFromModel = require('../models/onetech');
 
 var getTechie = async(req, res)=>{
     try {
-        var techies = await techieFromModel.getTechieData;
+        var techies = await techieFromModel.getTechieData();
         res.json(techies);
     } catch (error) {
         res.send("Error "+error);
@@ -15,22 +15,17 @@ var getTechie = async(req, res)=>{
 }
 
 var createTechie = async(req, res)=>{
-    const techie = new techieFromModel({
-        name: req.body.name,
-        lang : req.body.lang,
-    })
-
     try{
-        const x = await techie.save();
-        res.json(x);
+        var techie = await techieFromModel.createTechieData(req);
+        res.json(techie);
     }catch(err){
-        res.end("error");
+        res.end("error " + err);
     }
 }
 
 var getDetail = async(req, res)=>{
     try {
-        const techie = await techieFromModel.findById(req.params.id);
+        var techie = await techieFromModel.getTechieDataById(req.params.id);
         res.json(techie);
     } catch (error) {
         res.send("Error. Id Not present.");
@@ -39,21 +34,20 @@ var getDetail = async(req, res)=>{
 
 var updateTechie = async(req, res)=>{
     try {
-        const techie = await techieFromModel.findById(req.params.id);
-        techie.name = req.body.name;
-        techie.lang = req.body.lang;
-        const x = await techie.save();
-        res.json(x);
+        var techie = await techieFromModel.updateTechieById(req);
+        res.json(techie);
     } catch (error) {
-        res.send('Error patching.')
+        res.send('Error patching.' + error)
     }
 }
 
 var deleteTechie = async(req, res)=>{
     try {
-        const techie = await techieFromModel.findByIdAndDelete(req.params.id);
+        // const techie = await techieFromModel.findByIdAndDelete(req.params.id);
+        var techie = await techieFromModel.deleteTechieData(req.params.id);
         res.json(techie);
         res.send('Success');
+        
     } catch (error) {
         res.send(error);
         console.log('Error' + error);
