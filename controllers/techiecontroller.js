@@ -1,21 +1,21 @@
-const express = require('express');
-const mongoose = require('mongoose');
+var express = require('express');
+var mongoose = require('mongoose');
 
-const Techie = require('../models/onetech');
+var techieFromModel = require('../models/onetech');
 
-const router = express.Router();
+var router = express.Router();
 
 const getTechie = async(req, res)=>{
     try {
-        const techies = await Techie.find();
+        const techies = await techieFromModel.find();
         res.json(techies);
     } catch (error) {
         re.send("Error "+error);
     }
 }
 
-const createTechie = async(req, res)=>{
-    const techie = new Techie({
+var createTechie = async(req, res)=>{
+    const techie = new techieFromModel({
         name: req.body.name,
         lang : req.body.lang,
     })
@@ -28,18 +28,18 @@ const createTechie = async(req, res)=>{
     }
 }
 
-const getDetail = async(req, res)=>{
+var getDetail = async(req, res)=>{
     try {
-        const techie = await Techie.findById(req.params.id);
+        const techie = await techieFromModel.findById(req.params.id);
         res.json(techie);
     } catch (error) {
         res.send("Error. Id Not present.");
     }
 }
 
-const updateTechie = async(req, res)=>{
+var updateTechie = async(req, res)=>{
     try {
-        const techie = await Techie.findById(req.params.id);
+        const techie = await techieFromModel.findById(req.params.id);
         techie.name = req.body.name;
         techie.lang = req.body.lang;
         const x = await techie.save();
@@ -49,9 +49,9 @@ const updateTechie = async(req, res)=>{
     }
 }
 
-const deleteTechie = async(req, res)=>{
+var deleteTechie = async(req, res)=>{
     try {
-        const techie = await Techie.findByIdAndDelete(req.params.id);
+        const techie = await techieFromModel.findByIdAndDelete(req.params.id);
         res.json(techie);
         res.send('Success');
     } catch (error) {

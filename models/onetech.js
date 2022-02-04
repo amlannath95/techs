@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
-const techSchema = new mongoose.Schema({
+var techSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true

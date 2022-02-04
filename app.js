@@ -13,10 +13,10 @@ con.on('open', () => {
 
 app.use(express.json());
 
-const techrouter = require('./routes/techies');
-app.use('/techies', techrouter);
+const techRouter = require('./routes/techies');
+app.use('/techies', techRouter);
 
-const PORT = 9898;
+var PORT = 9898;
 
 app.listen(PORT, () => {
     console.log('Server started at '+PORT);

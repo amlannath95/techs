@@ -1,17 +1,17 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+var router = express.Router();
 //const Techie = require('../models/onetech');
-const Techie = require('../controllers/techiecontroller');
+var techieFromController = require('../controllers/techiecontroller');
 
-router.get('/', Techie.getTechie);
+router.get('/', techieFromController.getTechie);
 
-router.get('/:id', Techie.getDetail);
+router.get('/:id', techieFromController.getDetail);
 
-router.post('/', Techie.createTechie);
+router.post('/', techieFromController.createTechie);
 
-router.patch('/:id', Techie.updateTechie);
+router.patch('/:id', techieFromController.updateTechie);
 
-router.delete('/:id', Techie.deleteTechie);
+router.delete('/:id', techieFromController.deleteTechie);
 
 
 module.exports = router;
