@@ -1,11 +1,11 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const url = 'mongodb://localhost/techdbmvc';
+var express = require('express');
+var mongoose = require('mongoose');
+var url = 'mongodb://localhost/techdbmvc';
 
-const app = express();
+var app = express();
 
 mongoose.connect(url, {useNewUrlParser:true});
-const con = mongoose.connection;
+var con = mongoose.connection;
 
 con.on('open', () => {
     console.log('It is connected...');
@@ -13,7 +13,7 @@ con.on('open', () => {
 
 app.use(express.json());
 
-const techRouter = require('./routes/techies');
+var techRouter = require('./routes/techies');
 app.use('/techies', techRouter);
 
 var PORT = 9898;
