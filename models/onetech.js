@@ -1,3 +1,4 @@
+const res = require('express/lib/response');
 var mongoose = require('mongoose');
 
 var techSchema = new mongoose.Schema({
@@ -11,4 +12,11 @@ var techSchema = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('Techie', techSchema);
+
+var techieData = mongoose.model('Techie', techSchema);
+
+var getTechieData = techieData.find();
+//var getTechieDataById = 
+
+module.exports.getTechieData = getTechieData;
+

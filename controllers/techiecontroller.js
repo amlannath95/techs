@@ -3,14 +3,14 @@ var mongoose = require('mongoose');
 
 var techieFromModel = require('../models/onetech');
 
-var router = express.Router();
+//var router = express.Router();
 
-const getTechie = async(req, res)=>{
+var getTechie = async(req, res)=>{
     try {
-        const techies = await techieFromModel.find();
+        var techies = await techieFromModel.getTechieData;
         res.json(techies);
     } catch (error) {
-        re.send("Error "+error);
+        res.send("Error "+error);
     }
 }
 
