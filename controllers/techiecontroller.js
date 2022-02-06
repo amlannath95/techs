@@ -13,7 +13,7 @@ var getTechie = async(req, res)=>{
     }
 }
 
-//Creeate and save a new techie
+//Create and save a new techie
 var createTechie = async(req, res)=>{
     try{
         var techie = await techieFromModel.createTechieData(req);
