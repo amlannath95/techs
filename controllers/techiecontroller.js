@@ -9,7 +9,10 @@ var getTechie = async(req, res)=>{
         var techies = await techieFromModel.getTechieData();
         res.json(techies);
     } catch (error) {
-        res.send("Error "+error);
+        res.status(500).send({
+            message:
+                error.message || "Some error occured while retrieving techies."
+        });
     }
 }
 
@@ -19,7 +22,10 @@ var createTechie = async(req, res)=>{
         var techie = await techieFromModel.createTechieData(req);
         res.json(techie);
     }catch(err){
-        res.end("error " + err);
+        res.status(500).send({
+            message:
+                error.message || "Some error occured while creating the Techie."
+        });
     }
 }
 
@@ -29,7 +35,17 @@ var getDetail = async(req, res)=>{
         var techie = await techieFromModel.getTechieDataById(req.params.id);
         res.json(techie);
     } catch (error) {
-        res.send("Error. Id Not present.");
+        if(error.kind == "not_found"){
+            res.status(404).send({
+                message:
+                    `Not found Techie with id ${req.params.id}`
+            });
+        } else {
+            res.status(500).send({
+                message:
+                    "Error retrieving Techie with id " + req.params.id
+            });
+        }
     }
 }
 
@@ -39,7 +55,17 @@ var updateTechie = async(req, res)=>{
         var techie = await techieFromModel.updateTechieById(req);
         res.json(techie);
     } catch (error) {
-        res.send('Error Upating' + error)
+        if(error.kind == "not_found"){
+            res.status(404).send({
+                message:
+                    `Not found Techie with Id ${req.params.id}.`
+            });
+        } else {
+            res.status(500).send({
+                message:
+                    "Error updating Techie with id " + req.params.id
+            });
+        }
     }
 }
 
@@ -49,8 +75,17 @@ var deleteTechie = async(req, res)=>{
         var techie = await techieFromModel.deleteTechieData(req.params.id);
         res.json(techie);        
     } catch (error) {
-        res.send(error);
-        console.log('Error' + error);
+        if(error.kind == "not_found"){
+            res.status(404).send({
+                message:
+                    `Not found Techie with Id ${req.params.id}.`
+            });
+        } else {
+            res.status(500).send({
+                message:
+                    "Could not delete Techie with id " + req.params.id
+            });
+        }
     }
 }
 
