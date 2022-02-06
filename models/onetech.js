@@ -1,6 +1,7 @@
 const res = require('express/lib/response');
 var mongoose = require('mongoose');
 
+//Schema of the database
 var techSchema = new mongoose.Schema({
     name:{
         type:String,
@@ -12,18 +13,19 @@ var techSchema = new mongoose.Schema({
     },
 })
 
-
 var techieData = mongoose.model('Techie', techSchema);
 
-
+//Function returns the data of all techies
 async function getTechieData(){
     return await techieData.find();
 } 
 
+//Function returns the data of the techie specified by id
 async function getTechieDataById(id){
     return await techieData.findById(id);
 }
 
+//Function updates and returns the data of the techie specified by id
 async function updateTechieById(req){
     var techie = await techieData.findById(req.params.id);
     techie.name = req.body.name;
@@ -31,6 +33,7 @@ async function updateTechieById(req){
     return await techie.save();
 }
 
+//Functiion creates a techie and returns the updated database
 async function createTechieData(req){
     var techie = new techieData({
         name: req.body.name,
@@ -41,6 +44,7 @@ async function createTechieData(req){
         
 }
 
+//Function deletes the techie specified by id
 async function deleteTechieData(id){
     return await techieData.findByIdAndDelete(id);
 }
