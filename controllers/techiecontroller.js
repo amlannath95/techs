@@ -23,10 +23,18 @@ var createTechie = async(req, res)=>{
         var techie = await techieFromModel.createTechieData(req);
         techieFromResponse.createData(res, req, techie);
     }catch(err){
-        res.status(500).send({
-            message:
-                error.message || "Some error occured while creating the Techie."
-        });
+        if(!req.body.name || !req.body.lang){
+            res.send({
+                message: "Fields cannot be empty."
+            })
+        } 
+        else {
+            res.status(500).send({
+                message:
+                    error.message || "Some error occured while creating the Techie."
+            });
+        }
+        
     }
 }
 
@@ -62,10 +70,17 @@ var updateTechie = async(req, res)=>{
                     `Not found Techie with Id ${req.params.id}.`
             });
         } else {
-            res.status(500).send({
-                message:
-                    "Error updating Techie with id " + req.params.id
-            });
+            if(!req.body.name || !req.body.lang){
+                res.send({
+                    message: "Fields cannot be empty."
+                })
+            } else {
+                res.status(500).send({
+                    message:
+                        error.message || "Some error occured while creating the Techie."
+                });
+            }
+            
         }
     }
 }
