@@ -1,17 +1,9 @@
-const res = require('express/lib/response');
+var res = require('express/lib/response');
 var mongoose = require('mongoose');
+var createSchema = require('../utility/techieschema');
 
 //Schema of the database
-var techSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    },
-    lang:{
-        type:String,
-        required:true,
-    },
-})
+var techSchema = createSchema.createSchema();
 
 var techieData = mongoose.model('Techie', techSchema);
 

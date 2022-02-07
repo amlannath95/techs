@@ -16,7 +16,7 @@ con.on('open', () => {
 app.use(express.json());
 
 var techRouter = require('./routes/techies');
-app.use('/techies', techRouter);
+app.use('/', techRouter);
 
 //set port, listen for requests
 var PORT = 9898;
