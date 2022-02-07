@@ -2,12 +2,13 @@ var express = require('express');
 var mongoose = require('mongoose');
 
 var techieFromModel = require('../models/onetech');
+var techieFromResponse = require('../utility/response');
 
 //Retrieve all data techie data from the database
 var getTechie = async(req, res)=>{
     try {
         var techies = await techieFromModel.getTechieData();
-        res.json(techies);
+        techieFromResponse.retrieveData(res, techies);
     } catch (error) {
         res.status(500).send({
             message:
@@ -20,7 +21,7 @@ var getTechie = async(req, res)=>{
 var createTechie = async(req, res)=>{
     try{
         var techie = await techieFromModel.createTechieData(req);
-        res.json(techie);
+        techieFromResponse.createData(res, req, techie);
     }catch(err){
         res.status(500).send({
             message:
@@ -33,7 +34,7 @@ var createTechie = async(req, res)=>{
 var getDetail = async(req, res)=>{
     try {
         var techie = await techieFromModel.getTechieDataById(req.params.id);
-        res.json(techie);
+        techieFromResponse.retrieveDataById(res, req, techie);
     } catch (error) {
         if(error.kind == "not_found"){
             res.status(404).send({
@@ -53,7 +54,7 @@ var getDetail = async(req, res)=>{
 var updateTechie = async(req, res)=>{
     try {
         var techie = await techieFromModel.updateTechieById(req);
-        res.json(techie);
+        techieFromResponse.updateData(res, req, techie);
     } catch (error) {
         if(error.kind == "not_found"){
             res.status(404).send({
@@ -73,7 +74,7 @@ var updateTechie = async(req, res)=>{
 var deleteTechie = async(req, res)=>{
     try {
         var techie = await techieFromModel.deleteTechieData(req.params.id);
-        res.json(techie);        
+        techieFromResponse.deleteData(res, req);        
     } catch (error) {
         if(error.kind == "not_found"){
             res.status(404).send({
