@@ -1,8 +1,8 @@
 var express = require('express');
 var mongoose = require('mongoose');
 
-var techieFromModel = require('../models/onetech');
-var techieFromResponse = require('../utility/response');
+var techieFromModel = require('../../models/onetech');
+var techieFromResponse = require('../../utility/response');
 
 //Retrieve all data techie data from the database
 var getTechie = async(req, res)=>{
@@ -23,17 +23,30 @@ var createTechie = async(req, res)=>{
         var techie = await techieFromModel.createTechieData(req);
         techieFromResponse.createData(res, req, techie);
     }catch(err){
-        if(!req.body.name || !req.body.lang){
-            res.send({
+        var techieBody = req.body;
+        //obj  && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
+        if(techieBody && Object.keys(techieBody).length === 0 && Object.getPrototypeOf(techieBody) === Object.prototype){
+            return res.send({
                 message: "Fields cannot be empty."
             })
-        } 
-        else {
-            res.status(500).send({
-                message:
-                    error.message || "Some error occured while creating the Techie."
-            });
         }
+        else{
+            if(!(techieBody && techieBody.name)) {
+                return res.status(400).send({message: "Name can't be empty"});
+            }
+            else if(!(techieBody && techieBody.lang)) {
+                return res.status(400).send({message: "Lang can't be empty"}); 
+            }
+            // else if(!(techieBody && techieBody.contact)) {
+            //     return res.status(400).send({message: "Contact number can't be empty"}); 
+            // } 
+            else {
+                res.status(500).send({
+                    message:
+                        error.message || "Some error occured while creating the Techie."
+                });
+            }
+        } 
         
     }
 }

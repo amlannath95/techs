@@ -2,7 +2,7 @@ var express = require('express');
 
 var router = express.Router();
 
-var techieFromController = require('../controllers/techiecontroller');
+var techieFromController = require('../controllers/techieAssambly/techiecontroller');
 
 //Retrieve data of all techies
 router.get('/data', techieFromController.getTechie);

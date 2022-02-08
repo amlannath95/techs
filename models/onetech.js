@@ -20,8 +20,16 @@ async function getTechieDataById(id){
 //Function updates and returns the data of the techie specified by id
 async function updateTechieById(req){
     var techie = await techieData.findById(req.params.id);
-    techie.name = req.body.name;
-    techie.lang = req.body.lang;
+    
+    if(req.body.name){
+        techie.name = req.body.name;
+    }
+
+    if(req.body.lang){
+        techie.lang = req.body.lang;
+    }
+
+
     return await techie.save();
 }
 
