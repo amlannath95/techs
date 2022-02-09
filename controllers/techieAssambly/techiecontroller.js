@@ -5,7 +5,7 @@ var techieFromModel = require('../../models/onetech');
 var techieFromResponse = require('../../utility/response');
 
 //Retrieve all data techie data from the database
-var getTechie = async(req, res)=>{
+async function getTechie(req, res){
     try {
         var techies = await techieFromModel.getTechieData();
         techieFromResponse.retrieveData(res, techies);
@@ -18,41 +18,21 @@ var getTechie = async(req, res)=>{
 }
 
 //Create and save a new techie
-var createTechie = async(req, res)=>{
-    try{
+async function createTechie(req, res){
+    try {
         var techie = await techieFromModel.createTechieData(req);
-        techieFromResponse.createData(res, req, techie);
-    }catch(err){
-        var techieBody = req.body;
-        //obj  && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
-        if(techieBody && Object.keys(techieBody).length === 0 && Object.getPrototypeOf(techieBody) === Object.prototype){
-            return res.send({
-                message: "Fields cannot be empty."
-            })
-        }
-        else{
-            if(!(techieBody && techieBody.name)) {
-                return res.status(400).send({message: "Name can't be empty"});
-            }
-            else if(!(techieBody && techieBody.lang)) {
-                return res.status(400).send({message: "Lang can't be empty"}); 
-            }
-            // else if(!(techieBody && techieBody.contact)) {
-            //     return res.status(400).send({message: "Contact number can't be empty"}); 
-            // } 
-            else {
-                res.status(500).send({
-                    message:
-                        error.message || "Some error occured while creating the Techie."
-                });
-            }
-        } 
-        
-    }
+        techieFromResponse.createData(res, req, techie)
+    } catch (error) {
+        res.status(500).send({
+            message:
+                error.message || "Some error occured while creating the Techie."
+        });
+    } 
 }
 
+
 //Retrive the data of a techie with the specified id in the request
-var getDetail = async(req, res)=>{
+async function getDetail(req, res){
     try {
         var techie = await techieFromModel.getTechieDataById(req.params.id);
         techieFromResponse.retrieveDataById(res, req, techie);
@@ -72,34 +52,20 @@ var getDetail = async(req, res)=>{
 }
 
 //Update the data of a techie with the specified id in the request
-var updateTechie = async(req, res)=>{
+async function updateTechie(req, res){
     try {
         var techie = await techieFromModel.updateTechieById(req);
         techieFromResponse.updateData(res, req, techie);
     } catch (error) {
-        if(error.kind == "not_found"){
-            res.status(404).send({
-                message:
-                    `Not found Techie with Id ${req.params.id}.`
-            });
-        } else {
-            if(!req.body.name || !req.body.lang){
-                res.send({
-                    message: "Fields cannot be empty."
-                })
-            } else {
-                res.status(500).send({
-                    message:
-                        error.message || "Some error occured while creating the Techie."
-                });
-            }
-            
-        }
+        res.status(500).send({
+            message:
+                error.message || "Some error occured while updating the Techie."
+        });
     }
 }
 
 //Delete a techie with the specified id in the request
-var deleteTechie = async(req, res)=>{
+async function deleteTechie(req, res){
     try {
         var techie = await techieFromModel.deleteTechieData(req.params.id);
         techieFromResponse.deleteData(res, req);        

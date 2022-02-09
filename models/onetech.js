@@ -1,6 +1,6 @@
 var res = require('express/lib/response');
 var mongoose = require('mongoose');
-var createSchema = require('../utility/techieschema');
+var createSchema = require('../schema/techieschema');
 
 //Schema of the database
 var techSchema = createSchema.createSchema();
@@ -28,7 +28,23 @@ async function updateTechieById(req){
     if(req.body.lang){
         techie.lang = req.body.lang;
     }
+    console.log('in model')
 
+    if(req.body.contact){
+        techie.contact = req.body.contact;
+    }
+
+    if(req.body.dob){
+        techie.dob = req.body.dob;
+    }
+
+    if(req.body.email){
+        techie.email = req.body.email;
+    }
+
+    if(req.body.pwd){
+        techie.pwd = req.body.pwd;
+    }
 
     return await techie.save();
 }
@@ -38,6 +54,10 @@ async function createTechieData(req){
     var techie = new techieData({
         name: req.body.name,
         lang : req.body.lang,
+        contact : req.body.contact,
+        email : req.body.email,
+        dob : req.body.dob,
+        pwd : req.body.pwd
     })
     
     return await techie.save();
