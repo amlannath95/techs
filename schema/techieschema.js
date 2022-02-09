@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+//Schema of the app
 function createSchema(){
     return new mongoose.Schema({
         name:{

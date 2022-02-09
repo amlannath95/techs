@@ -9,6 +9,7 @@ var dobREGEX = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012]-\d{4})$/;
 
 var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
 
+//Validates the data used for creation of a techie
 function createTechie(req, res) {
     var techieBody = req.body;
     if (techieBody && Object.keys(techieBody).length === 0 && Object.getPrototypeOf(techieBody) === Object.prototype) {
@@ -51,6 +52,7 @@ function createTechie(req, res) {
 
 }
 
+//Validates the data used for updation of techie
 function updateTechie(req, res) {
     techieBody = req.body;
 
