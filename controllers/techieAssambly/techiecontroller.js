@@ -1,5 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 
 var techieFromModel = require('../../models/onetech');
 var techieFromResponse = require('../../utility/response');
@@ -84,8 +86,84 @@ async function deleteTechie(req, res){
     }
 }
 
+//Sign in
+async function signInTechie(req, res) {
+    var user = await techieFromModel.techieData.findOne({
+        email: req.body.email,
+    })
+
+    if(!user){
+        res.status(500).send({
+            message:
+                'Invalid login email'
+        })
+    };
+
+    var isPasswordValid = await bcrypt.compare(
+        req.body.pwd,
+        user.pwd
+    );
+    if(isPasswordValid){
+        var token = jwt.sign({
+            id : req.params.id,
+        },
+        'secretkey123',
+        {expiresIn : "1h"}
+        );
+
+        return res.send({
+            'status' : true,
+            'message' : 'Signed in successfully',
+            'token' : token
+        })
+    } else {
+        res.status(500).send({
+            'status': false,
+            'message': 'Invalid email or password'
+        })
+    }
+}
+
+//Sign up
+async function signUpTechie(req, res){
+    try {
+        var newPwd = await bcrypt.hash(req.body.pwd, 10);
+        var techie = await techieFromModel.signUpTechie(req, res, newPwd);
+        await techieFromResponse.signUpTechie(res, req, techie);
+        // await techieFromModel.techieData.create({
+        //     name : req.body.name,
+        //     email : req.body.email,
+        //     pwd : newPwd
+        // })
+    } catch (error) {
+        res.status(500).send({
+            message:
+                error || 'Error in signup'
+        })
+    }
+}
+
+// if(studentBody.password == rows.password){
+//     rows.password = undefined;
+//     const jsontoken = jwt.sign({result: rows}, "paisabazaar", {expiresIn: "1h"});
+//     return res.send({
+//         "status": true,
+//         "message": "Logged in successfully.",
+//         "token": jsontoken
+//     });
+// }
+// else{
+//     return res.send({
+//         "status": false,
+//         "message": "Invalid email or password"
+//     });
+// }
+
+
 module.exports.getTechie = getTechie;
 module.exports.createTechie = createTechie;
 module.exports.getDetail = getDetail;
 module.exports.updateTechie = updateTechie;
 module.exports.deleteTechie = deleteTechie;
+module.exports.signInTechie = signInTechie;
+module.exports.signUpTechie = signUpTechie;

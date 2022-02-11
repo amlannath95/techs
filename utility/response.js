@@ -36,10 +36,25 @@ async function deleteData(res, req){
 //Creates the techie and displays the data
 async function createData(res, req, data){
     return await res.send({
-        "message" : `Successfully created the id: ${req.params.id}`,
+        "message" : `Successfully created the id: ${data.id}`,
         "status" : true,
         "data" : data
     });
+}
+
+//Sign up
+async function signUpTechie(res, req, data){
+    console.log(data)
+    return res.send({
+        "message" : `Successfully created the id: ${data.id}`,
+        "status" : true,
+        "data" : data
+    })
+}
+
+//Sign in
+async function signInTechie(res, token){
+
 }
 
 module.exports.retrieveData = retrieveData;
@@ -47,4 +62,6 @@ module.exports.retrieveDataById = retrieveDataById;
 module.exports.updateData = updateData;
 module.exports.deleteData = deleteData;
 module.exports.createData = createData;
+module.exports.signUpTechie = signUpTechie;
+
 

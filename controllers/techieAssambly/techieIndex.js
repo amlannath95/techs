@@ -32,3 +32,15 @@ module.exports.getDetail = function getDetail(req, res){
 module.exports.deleteTechie = function deleteTechie(req, res){
     techieController.deleteTechie(req, res);
 }
+
+//Sign-in
+module.exports.signInTechie = function signInTechie(req, res){
+    techieController.signinTechie(req, res);
+}
+
+//Sign up
+module.exports.signUpTechie = function signUpTechie(req, res){
+    if(techieValidation.signUpTechie(req, res)){
+        techieController.signUpTechie(req, res);
+    }
+}

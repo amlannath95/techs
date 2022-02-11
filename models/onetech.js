@@ -69,9 +69,32 @@ async function deleteTechieData(id){
     return await techieData.findByIdAndDelete(id);
 }
 
+//Sign up
+async function signUpTechie(req, res, newPwd){
+    var techie = new techieData({
+        name: req.body.name,
+        lang : req.body.lang,
+        contact : req.body.contact,
+        email : req.body.email,
+        dob : req.body.dob,
+        pwd : newPwd
+    })
+    
+    return await techie.save();
+        
+}
+
+//Sign In
+async function signInTechie(){
+    
+}
+
 module.exports.getTechieData = getTechieData;
 module.exports.getTechieDataById = getTechieDataById;
 module.exports.updateTechieById = updateTechieById;
 module.exports.createTechieData = createTechieData;
 module.exports.deleteTechieData = deleteTechieData;
+module.exports.signUpTechie = signUpTechie;
+
+module.exports.techieData = techieData;
 
