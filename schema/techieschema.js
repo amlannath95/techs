@@ -30,7 +30,4 @@ function createSchema(){
     });
 }
 
-    
-  
-
 module.exports.createSchema = createSchema;
