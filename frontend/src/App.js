@@ -1,12 +1,13 @@
 import './App.css';
-import Dashboard from './Dashboard';
-import Form from './Form';
-import Login from './Login';
+import Signup from './Signup';
+// import Dashboard from './Dashboard';
+// import Form from './Form';
+// import Login from './Login';
 
 function App() {
   return (
     <div className="App">
-      <Form/>
+      <Signup/>
     </div>
   );
 }
