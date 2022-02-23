@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import './App.css'
 
-export default function Signup() {
+export default function Signup(props) {
 
     //States for signup
     const [name, setName] = useState('');
@@ -102,13 +102,17 @@ export default function Signup() {
         }).then((res) => {
             console.log('success', res);
         })
-        console.log(name+dob+email+contact+lang+pwd)
         
+        props.history.push('/dashboard')
+    }
+
+    const signInUser = () => {
+        props.history.push('/signin');
     }
     
 
     return (
-        <div className='form'>
+        <div className='signup'>
             <div>
                 <h1>
                     User SignUp
@@ -146,8 +150,11 @@ export default function Signup() {
                 <input onChange={handleLang} className='input' value={lang} type='text' onBlur={langValidation}/>
                 </form>
                 <button className='submitButton' onClick={signUpUser}>SUBMIT</button>
-            
+                <div>
+                    <button className='submitButton' onClick={signInUser}>Sign In</button>
+                </div>
         </div>
+        
     )
     
 }
