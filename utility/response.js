@@ -43,12 +43,13 @@ async function createData(res, req, data){
 }
 
 //Sign up
-async function signUpTechie(res, req, data){
+async function signUpTechie(res, req, data, token){
     console.log(data)
     return res.send({
         "message" : `Successfully created the id: ${data.id}`,
         "status" : true,
-        "data" : data
+        "data" : data,
+        "token":token
     })
 }
 

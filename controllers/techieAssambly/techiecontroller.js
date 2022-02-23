@@ -7,7 +7,7 @@ var techieFromModel = require('../../models/onetech');
 var techieFromResponse = require('../../utility/response');
 
 //Retrieve all data techie data from the database
-async function getTechie(req, res){
+async function getTechie(req, res) {
     try {
         var techies = await techieFromModel.getTechieData();
         techieFromResponse.retrieveData(res, techies);
@@ -20,7 +20,7 @@ async function getTechie(req, res){
 }
 
 //Create and save a new techie
-async function createTechie(req, res){
+async function createTechie(req, res) {
     try {
         var techie = await techieFromModel.createTechieData(req);
         techieFromResponse.createData(res, req, techie)
@@ -29,17 +29,17 @@ async function createTechie(req, res){
             message:
                 error.message || "Some error occured while creating the Techie."
         });
-    } 
+    }
 }
 
 
 //Retrive the data of a techie with the specified id in the request
-async function getDetail(req, res){
+async function getDetail(req, res) {
     try {
         var techie = await techieFromModel.getTechieDataById(req.params.id);
         techieFromResponse.retrieveDataById(res, req, techie);
     } catch (error) {
-        if(error.kind == "not_found"){
+        if (error.kind == "not_found") {
             res.status(404).send({
                 message:
                     `Not found Techie with id ${req.params.id}`
@@ -54,7 +54,7 @@ async function getDetail(req, res){
 }
 
 //Update the data of a techie with the specified id in the request
-async function updateTechie(req, res){
+async function updateTechie(req, res) {
     try {
         var techie = await techieFromModel.updateTechieById(req);
         techieFromResponse.updateData(res, req, techie);
@@ -67,12 +67,12 @@ async function updateTechie(req, res){
 }
 
 //Delete a techie with the specified id in the request
-async function deleteTechie(req, res){
+async function deleteTechie(req, res) {
     try {
         var techie = await techieFromModel.deleteTechieData(req.params.id);
-        techieFromResponse.deleteData(res, req);        
+        techieFromResponse.deleteData(res, req);
     } catch (error) {
-        if(error.kind == "not_found"){
+        if (error.kind == "not_found") {
             res.status(404).send({
                 message:
                     `Not found Techie with Id ${req.params.id}.`
@@ -92,7 +92,7 @@ async function signInTechie(req, res) {
         email: req.body.email,
     })
 
-    if(!user){
+    if (!user) {
         res.status(500).send({
             message:
                 'Invalid login email'
@@ -103,18 +103,18 @@ async function signInTechie(req, res) {
         req.body.pwd,
         user.pwd
     );
-    if(isPasswordValid){
+    if (isPasswordValid) {
         var token = jwt.sign({
-            id : req.params.id,
+            id: req.params.id,
         },
-        'secretkey123',
-        {expiresIn : "1h"}
+            'secretkey123',
+            { expiresIn: "1h" }
         );
 
         return res.send({
-            'status' : true,
-            'message' : 'Signed in successfully',
-            'token' : token
+            'status': true,
+            'message': 'Signed in successfully',
+            'token': token
         })
     } else {
         res.status(500).send({
@@ -125,11 +125,17 @@ async function signInTechie(req, res) {
 }
 
 //Sign up
-async function signUpTechie(req, res){
+async function signUpTechie(req, res) {
     try {
         var newPwd = await bcrypt.hash(req.body.pwd, 10);
         var techie = await techieFromModel.signUpTechie(req, res, newPwd);
-        await techieFromResponse.signUpTechie(res, req, techie);
+        var token = jwt.sign({
+            id: req.body._id,
+        },
+            'secretkey123',
+            { expiresIn: "1h" }
+        );
+        await techieFromResponse.signUpTechie(res, req, techie, token);
         // await techieFromModel.techieData.create({
         //     name : req.body.name,
         //     email : req.body.email,
