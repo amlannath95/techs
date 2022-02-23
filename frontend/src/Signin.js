@@ -9,6 +9,7 @@ export default function Signin(props) {
     const [email, setEmail] = useState('');
     const [pwd, setpwd] = useState('');
 
+    //Regex for email and password
     var emailRegex = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
     var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
 
@@ -37,6 +38,16 @@ export default function Signin(props) {
         setpwd(e.target.value);
     }
 
+    function signInUser(){
+        axios.post("http://localhost:9898/signin",{
+            email:email,
+            pwd:pwd
+        }).then((res) => {
+            console.log('success', res);
+        })
+        props.history.push('/dashboard');
+    }
+
     return (
         <div className='signin'>
             <div>
@@ -55,7 +66,7 @@ export default function Signin(props) {
                 </label>
                 <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation} />
             </form>
-            <button className='submitButton'>Submit</button>
+            <button className='submitButton' onClick={signInUser}>Submit</button>
         </div>
     );
 }
