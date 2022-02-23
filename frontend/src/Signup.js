@@ -1,5 +1,5 @@
 import {useState} from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 import React from 'react';
 import './App.css'
 
@@ -91,18 +91,20 @@ export default function Signup() {
         setContact(e.target.value);
     }
 
-    // const signUpUser = () => {
-    //     axios.post("http://localhost:9898/signup",{
-    //         email:email,
-    //         pwd:pwd,
-    //         dob:dob,
-    //         contact:contact,
-    //         name:name,
-    //         lang:lang
-    //     }).then((res) => {
-    //         console.log('success', res);
-    //     })
-    // }
+    const signUpUser = () => {
+        axios.post("http://localhost:9898/signup",{
+            email:email,
+            pwd:pwd,
+            dob:dob,
+            contact:contact,
+            name:name,
+            lang:lang
+        }).then((res) => {
+            console.log('success', res);
+        })
+        console.log(name+dob+email+contact+lang+pwd)
+        
+    }
     
 
     return (
@@ -143,7 +145,7 @@ export default function Signup() {
                 </label>
                 <input onChange={handleLang} className='input' value={lang} type='text' onBlur={langValidation}/>
                 </form>
-                <button className='submitButton' >SUBMIT</button>
+                <button className='submitButton' onClick={signUpUser}>SUBMIT</button>
             
         </div>
     )

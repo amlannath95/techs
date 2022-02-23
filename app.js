@@ -1,10 +1,12 @@
 var express = require('express');
 var mongoose = require('mongoose');
+const cors = require("cors");
 
 //creating a database with name techdbmvc
 var url = 'mongodb://localhost/techdbmvc';
 
 var app = express();
+app.use(cors());
 
 mongoose.connect(url, {useNewUrlParser:true});
 var con = mongoose.connection;
