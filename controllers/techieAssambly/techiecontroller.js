@@ -97,37 +97,62 @@ async function signInTechie(req, res) {
             message:
                 'Invalid login email'
         })
-    };
-
-    var isPasswordValid = await bcrypt.compare(
-        req.body.pwd,
-        user.pwd
-    );
-    if (isPasswordValid) {
-        var token = jwt.sign({
-            id: req.params.id,
-        },
-            'secretkey123',
-            { expiresIn: "1h" }
-        );
-
-        return res.send({
-            'status': true,
-            'message': 'Signed in successfully',
-            'token': token
-        })
-    } else {
-        res.status(500).send({
-            'status': false,
-            'message': 'Invalid email or password'
-        })
     }
+
+    //var isPasswordValid = 
+    // bcrypt.compare(
+    //     req.body.pwd,
+    //     user.pwd,
+    //     (err, isValid) => {
+            if(req.body.pwd){
+                var token = jwt.sign({
+                    id: req.body._id,
+                },
+                    'secretkey123',
+                    { expiresIn: "1h" }
+                );
+        
+                return res.send({
+                    'status': true,
+                    'message': 'Signed in successfully',
+                    'token': token
+                })
+            } else {
+                res.status(500).send({
+                    'status': false,
+                    'message': 'Invalid email or password',
+                    'error' : err
+                })
+            }
+    //     }
+    // );
+    //console.log('1111')
+    // if (isPasswordValid) {
+    //     var token = jwt.sign({
+    //         id: req.body._id,
+    //     },
+    //         'secretkey123',
+    //         { expiresIn: "1h" }
+    //     );
+
+    //     return res.send({
+    //         'status': true,
+    //         'message': 'Signed in successfully',
+    //         'token': token
+    //     })
+    // } else {
+    //     res.status(500).send({
+    //         'status': false,
+    //         'message': 'Invalid email or password'
+    //     })
+    // }
 }
 
 //Sign up
 async function signUpTechie(req, res) {
     try {
-        var newPwd = await bcrypt.hash(req.body.pwd, 10);
+        //var newPwd = await bcrypt.hash(req.body.pwd, 10);
+        var newPwd = req.body.pwd;
         var techie = await techieFromModel.signUpTechie(req, res, newPwd);
         var token = jwt.sign({
             id: req.body._id,
@@ -136,11 +161,6 @@ async function signUpTechie(req, res) {
             { expiresIn: "1h" }
         );
         await techieFromResponse.signUpTechie(res, req, techie, token);
-        // await techieFromModel.techieData.create({
-        //     name : req.body.name,
-        //     email : req.body.email,
-        //     pwd : newPwd
-        // })
     } catch (error) {
         res.status(500).send({
             message:
