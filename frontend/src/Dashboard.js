@@ -3,11 +3,19 @@ import axios from 'axios';
 import React from 'react';
 import './App.css'
 
-export default  function Dashboard(){
+export default  function Dashboard(props){
+    function signOut(){
+        props.history.push('/');       
+    }
+
+    function getDetails(){
+        
+    }
+
     return(
         <div className='dashboard'>
-            <button >Get Details</button>
-            <button >Log Out</button>
+            <button onClick={getDetails}>Get Details</button>
+            <button onClick={signOut} >Sign Out</button>
         </div>
     )
 }

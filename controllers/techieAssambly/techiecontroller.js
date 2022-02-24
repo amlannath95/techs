@@ -169,7 +169,7 @@ async function signUpTechie(req, res) {
         //var newPwd = await bcrypt.hash(req.body.pwd, 10);
         var newPwd = req.body.pwd;
         var techie = await techieFromModel.signUpTechie(req, res, newPwd);
-        var uid = JSON.stringify(user._id);
+        var uid = JSON.stringify(techie._id);
         uid = uid.slice(1,-1);
         var token = jwt.sign({
             payload: uid,

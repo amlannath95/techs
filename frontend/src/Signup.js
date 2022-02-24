@@ -100,6 +100,8 @@ export default function Signup(props) {
             name:name,
             lang:lang
         }).then((res) => {
+            console.log("Signup",res.data.token);
+            localStorage.setItem('token', res.token);
             console.log('success', res);
         })
         
