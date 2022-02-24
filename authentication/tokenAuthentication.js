@@ -11,7 +11,7 @@ module.exports = {
         console.log(token);
         if(token){
             console.log('here');
-            // token = token.slice(7);
+            //token = token.slice(7);
             jwt.verify(token, 'secretkey123', (err, decoded) => {
                 if(err){
                     // console.log(err);
@@ -28,7 +28,7 @@ module.exports = {
         else{
             res.send({
                 "status": false,
-                "message": "Access denied"
+                "message": "Access denied. Inside token auth"
             });
         }
     }

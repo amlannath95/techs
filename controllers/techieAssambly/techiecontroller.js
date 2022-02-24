@@ -36,6 +36,9 @@ async function createTechie(req, res) {
 //Retrive the data of a techie with the specified id in the request
 async function getDetail(req, res) {
     try {
+        // var bearerToken = req.params.token;
+        // decoded = jwt.verify(bearerToken, 'secretkey123');
+        // var id = decoded.payload; 
         var techie = await techieFromModel.getTechieDataById(req.params.id);
         techieFromResponse.retrieveDataById(res, req, techie);
     } catch (error) {
@@ -47,7 +50,7 @@ async function getDetail(req, res) {
         } else {
             res.status(500).send({
                 message:
-                    "Error retrieving Techie with id " + req.params.id
+                    "Error retrieving Techie with id " + req.params.id+" error:"+error
             });
         }
     }
@@ -105,17 +108,29 @@ async function signInTechie(req, res) {
     //     user.pwd,
     //     (err, isValid) => {
             if(req.body.pwd){
+                console.log("stringify",JSON.stringify(user._id));
+                var uid = JSON.stringify(user._id);
+                uid = uid.slice(1,-1);
+                console.log('uid', uid);
+
                 var token = jwt.sign({
-                    id: req.body._id,
+                    payload: uid,
                 },
                     'secretkey123',
                     { expiresIn: "1h" }
                 );
+
+                decoded = jwt.verify(token, 'secretkey123');
+                var id = decoded.payload;
+                console.log("Id:",id)
         
                 return res.send({
                     'status': true,
                     'message': 'Signed in successfully',
-                    'token': token
+                    'data': user,
+                    'token': token,
+                    'id':id
+                    
                 })
             } else {
                 res.status(500).send({
@@ -154,13 +169,15 @@ async function signUpTechie(req, res) {
         //var newPwd = await bcrypt.hash(req.body.pwd, 10);
         var newPwd = req.body.pwd;
         var techie = await techieFromModel.signUpTechie(req, res, newPwd);
+        var uid = JSON.stringify(user._id);
+        uid = uid.slice(1,-1);
         var token = jwt.sign({
-            id: req.body._id,
+            payload: uid,
         },
             'secretkey123',
             { expiresIn: "1h" }
         );
-        await techieFromResponse.signUpTechie(res, req, techie, token);
+        await techieFromResponse.signUpTechie(res, req, techie, token, uid);
     } catch (error) {
         res.status(500).send({
             message:
