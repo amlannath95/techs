@@ -17,6 +17,7 @@ export default  function Dashboard(props){
             (res) => {
                 console.log("success:", res);
                 setUserData(res);
+                const details = res.data.data;
             }
         ).catch((err) => {
             console.log("err:", err);

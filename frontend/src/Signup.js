@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import React from 'react';
 import './App.css'
@@ -9,7 +9,7 @@ export default function Signup(props) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [pwd, setpwd] = useState('');
-    const [dob, setDob] =useState('');
+    const [dob, setDob] = useState('');
     const [contact, setContact] = useState('');
     const [lang, setLang] = useState('');
 
@@ -21,52 +21,64 @@ export default function Signup(props) {
 
     var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
 
-    var checkVariable = true;
-    
-    function emailValidation(){
-        if(!emailRegex.test(email)){
-            if(!contactRegex.test(contact)){
-                alert('Email not in correct format');
-                checkVariable = false;
-            }
+    var checkEmail = false, checkPwd = false, checkName = false,
+        checkDob = false, checkContact = false, checkLang = false;
+
+    function emailValidation() {
+        if (!emailRegex.test(email)) {
+            alert('Email not in correct format');
+            checkEmail = false;
+
+        } else {
+            checkEmail = true;
         }
     }
 
-    function pwdValidation(){
-        if(!passwordRegex.test(pwd)){
+    function pwdValidation() {
+        if (!passwordRegex.test(pwd)) {
             alert('Password not in correct format');
-            checkVariable = false;
+            checkPwd = false;
+        } else {
+            checkPwd = true;
         }
     }
 
-    function dobValidation(){
-        if(!dobRegex.test(dob)){
+    function dobValidation() {
+        if (!dobRegex.test(dob)) {
             alert('DOB not in correct format');
-            checkVariable = false;
+            checkDob = false;
+        } else {
+            checkDob = true;
         }
     }
 
-    function contactValidation(){
-        if(!contactRegex.test(contact)){
+    function contactValidation() {
+        if (!contactRegex.test(contact)) {
             alert('Contact number not in correct format');
-            checkVariable = false;
+            checkContact = false;
+        } else {
+            checkContact = true;
         }
     }
 
-    function nameValidation(){
-        if(!name){
+    function nameValidation() {
+        if (!name) {
             alert('Name cannot be empty');
-            checkVariable = false;
+            checkName = false;
+        } else {
+            checkName = true;
         }
     }
 
-    function langValidation(){
-        if(!lang){
+    function langValidation() {
+        if (!lang) {
             alert('Lang cannot be empty');
-            checkVariable = false;
+            checkLang = false;
+        } else {
+            checkLang = true;
         }
     }
-    
+
     const handleEmail = (e) => {
         setEmail(e.target.value);
     }
@@ -92,21 +104,25 @@ export default function Signup(props) {
     }
 
     const signUpUser = () => {
-        axios.post("http://localhost:9898/signup",{
-            email:email,
-            pwd:pwd,
-            dob:dob,
-            contact:contact,
-            name:name,
-            lang:lang
-        }).then((res) => {
-            console.log("Signup",res.data.token);
-            localStorage.setItem('token', res.data.token);
-            console.log('success', res);
-        })
-        
-        //After suucessful signup it will redirect to the dashboard page
-        props.history.push('/dashboard')
+        if (checkContact && checkDob && checkEmail && checkLang && checkName && checkPwd) {
+            axios.post("http://localhost:9898/signup", {
+                email: email,
+                pwd: pwd,
+                dob: dob,
+                contact: contact,
+                name: name,
+                lang: lang
+            }).then((res) => {
+                console.log("Signup", res.data.token);
+                localStorage.setItem('token', res.data.token);
+                console.log('success', res);
+            })
+
+            //After suucessful signup it will redirect to the dashboard page
+            props.history.push('/dashboard')
+        } else {
+            alert('Enter correct data');
+        }
     }
 
     const signInUser = () => {
@@ -114,7 +130,7 @@ export default function Signup(props) {
         //It will redirect to signin page
         props.history.push('/signin');
     }
-    
+
 
     return (
         <div className='signup'>
@@ -127,40 +143,40 @@ export default function Signup(props) {
                 <label className='label'>
                     Email
                 </label>
-                <input onChange={handleEmail} className='input' value={email} type='email' onBlur={emailValidation}/>
-                
+                <input onChange={handleEmail} className='input' value={email} type='email' onBlur={emailValidation} />
+
                 <label className='label'>
                     Name
                 </label>
-                <input onChange={handleName} className='input' value={name} type='text' onBlur={nameValidation}/>
+                <input onChange={handleName} className='input' value={name} type='text' onBlur={nameValidation} />
 
                 <label className='label'>
                     pwd
                 </label>
-                <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation}/>
+                <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation} />
 
                 <label className='label'>
                     Contact
                 </label>
-                <input onChange={handleContact} className='input' value={contact} type='text' onBlur={contactValidation}/>
+                <input onChange={handleContact} className='input' value={contact} type='text' onBlur={contactValidation} />
 
                 <label className='label'>
                     DOB
                 </label>
-                <input onChange={handleDob} className='input' value={dob} type='date' onBlur={dobValidation}/>
+                <input onChange={handleDob} className='input' value={dob} type='date' onBlur={dobValidation} />
 
                 <label className='label'>
                     Lang
                 </label>
-                <input onChange={handleLang} className='input' value={lang} type='text' onBlur={langValidation}/>
-                </form>
-                <button className='submitButton' onClick={signUpUser}>SUBMIT</button>
-                <div>
-                    <button className='submitButton' onClick={signInUser}>Sign In</button>
-                </div>
+                <input onChange={handleLang} className='input' value={lang} type='text' onBlur={langValidation} />
+            </form>
+            <button className='submitButton' onClick={signUpUser}>SUBMIT</button>
+            <div>
+                <button className='submitButton' onClick={signInUser}>Sign In</button>
+            </div>
         </div>
-        
+
     )
-    
+
 }
 
