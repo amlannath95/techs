@@ -10,7 +10,7 @@ var techieFromController = require('../controllers/techieAssambly/techiecontroll
 router.get('/data',  techieFromIndex.getTechieData);
 
 //Retrieve data of a techies via token
-router.get('/getUserData/:id', techieFromIndex.getDetail);
+router.get('/getUserData/:id',tokenAuthentication.checkToken, techieFromIndex.getDetail);
 
 //Create a techie
 router.post('/createUser', techieFromIndex.createTechieData);

@@ -10,7 +10,7 @@ async function retrieveData(res, data){
 //Displays the data of the techie specified by id
 async function retrieveDataById(res, req, data){
     return await res.send({
-        "message" : `Successfully retrieved the data of id: ${req.params.id}`,
+        "message" : `Successfully retrieved the data of id: ${data.id}`,
         "status" : true,
         "data" : data
     });

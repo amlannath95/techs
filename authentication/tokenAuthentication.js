@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 module.exports = {
     checkToken: (req, res, next) => {
         // let token = req.get("authorization");
-        let token = req.params.token;
+        let token = req.params.id;
         console.log(token);
         // token = token.substr(7);
         console.log(token);
@@ -17,7 +17,7 @@ module.exports = {
                     // console.log(err);
                     res.send({
                         "status": false,
-                        "message": "Invalid token"
+                        "message": "Invalid token. Inside auth"
                     });
                 }
                 else{

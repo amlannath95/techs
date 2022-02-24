@@ -36,10 +36,10 @@ async function createTechie(req, res) {
 //Retrive the data of a techie with the specified id in the request
 async function getDetail(req, res) {
     try {
-        // var bearerToken = req.params.token;
-        // decoded = jwt.verify(bearerToken, 'secretkey123');
-        // var id = decoded.payload; 
-        var techie = await techieFromModel.getTechieDataById(req.params.id);
+        var bearerToken = req.params.id;
+        decoded = jwt.verify(bearerToken, 'secretkey123');
+        var id = decoded.payload; 
+        var techie = await techieFromModel.getTechieDataById(id);
         techieFromResponse.retrieveDataById(res, req, techie);
     } catch (error) {
         if (error.kind == "not_found") {
