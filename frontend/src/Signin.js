@@ -44,6 +44,7 @@ export default function Signin(props) {
             pwd:pwd
         }).then((res) => {
             console.log('success', res);
+            localStorage.setItem('token', res.data.token);
         })
         props.history.push('/dashboard');
     }
