@@ -103,10 +103,13 @@ export default function Signup(props) {
             console.log('success', res);
         })
         
+        //After suucessful signup it will redirect to the dashboard page
         props.history.push('/dashboard')
     }
 
     const signInUser = () => {
+
+        //It will redirect to signin page
         props.history.push('/signin');
     }
     
