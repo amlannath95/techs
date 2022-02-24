@@ -38,6 +38,7 @@ export default function Signin(props) {
         setpwd(e.target.value);
     }
 
+    //Sends the entered data for sigin
     function signInUser(){
         axios.post("http://localhost:9898/signin",{
             email:email,
@@ -47,6 +48,11 @@ export default function Signin(props) {
             localStorage.setItem('token', res.data.token);
         })
         props.history.push('/dashboard');
+    }
+
+    //Redirects to sign up page
+    function signUp(){
+        props.history.push('/');
     }
 
     return (
@@ -68,6 +74,9 @@ export default function Signin(props) {
                 <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation} />
             </form>
             <button className='submitButton' onClick={signInUser}>Submit</button>
+            <div>
+                <button onClick={signUp}>Sign UP!</button>
+            </div>
         </div>
     );
 }

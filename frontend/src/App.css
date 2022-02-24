@@ -3,6 +3,11 @@
   background-color: greenyellow;
 }
 
+.userData {
+  font-size: larger;
+  color: red;
+}
+
 .dashboard {
   font-size: larger;
   padding: 5px;
