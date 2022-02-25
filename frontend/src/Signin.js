@@ -47,6 +47,9 @@ export default function Signin(props) {
         emailValidation();
         pwdValidation();
 
+        console.log(email, pwd);
+        console.log(checkEmail, checkPwd);
+
         if(checkEmail && checkPwd){
         axios.post("http://localhost:9898/signin",{
             email:email,
@@ -83,12 +86,12 @@ export default function Signin(props) {
                 <label className='label'>
                     Email
                 </label>
-                <input onChange={handleEmail} className='input' value={email} type='email'  />
+                <input onChange={handleEmail} className='input' value={email} type='email' onBlur={emailValidation} />
 
                 <label className='label'>
                     pwd
                 </label>
-                <input onChange={handlepwd} className='input' value={pwd} type='password' />
+                <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation}/>
             </form>
             <button className='submitButton' onClick={signInUser}>Submit</button>
             <div>
