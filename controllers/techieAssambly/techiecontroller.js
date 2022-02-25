@@ -38,7 +38,7 @@ async function getDetail(req, res) {
     try {
         var bearerToken = req.params.id;
         decoded = jwt.verify(bearerToken, 'secretkey123');
-        var id = decoded.payload; 
+        var id = decoded.payload;
         var techie = await techieFromModel.getTechieDataById(id);
         techieFromResponse.retrieveDataById(res, req, techie);
     } catch (error) {
@@ -50,7 +50,7 @@ async function getDetail(req, res) {
         } else {
             res.status(500).send({
                 message:
-                    "Error retrieving Techie with id " + req.params.id+" error:"+error
+                    "Error retrieving Techie with id " + req.params.id + " error:" + error
             });
         }
     }
@@ -102,43 +102,38 @@ async function signInTechie(req, res) {
         })
     }
 
-    //var isPasswordValid = 
-    // bcrypt.compare(
-    //     req.body.pwd,
-    //     user.pwd,
-    //     (err, isValid) => {
-            if(user && bcrypt.compareSync(req.body.pwd, user.pwd)){
-                console.log("stringify",JSON.stringify(user._id));
-                var uid = JSON.stringify(user._id);
-                uid = uid.slice(1,-1);
-                console.log('uid', uid);
+    if (user && bcrypt.compareSync(req.body.pwd, user.pwd)) {
+        console.log("stringify", JSON.stringify(user._id));
+        var uid = JSON.stringify(user._id);
+        uid = uid.slice(1, -1);
+        console.log('uid', uid);
 
-                var token = jwt.sign({
-                    payload: uid,
-                },
-                    'secretkey123',
-                    { expiresIn: "1h" }
-                );
+        var token = jwt.sign({
+            payload: uid,
+        },
+            'secretkey123',
+            { expiresIn: "1h" }
+        );
 
-                decoded = jwt.verify(token, 'secretkey123');
-                var id = decoded.payload;
-                console.log("Id:",id)
-        
-                return res.send({
-                    'status': true,
-                    'message': 'Signed in successfully',
-                    'data': user,
-                    'token': token,
-                    'id':id
-                    
-                })
-            } else {
-                res.status(500).send({
-                    'status': false,
-                    'message': 'Invalid email or password',
-                    
-                })
-            }
+        decoded = jwt.verify(token, 'secretkey123');
+        var id = decoded.payload;
+        console.log("Id:", id)
+
+        return res.send({
+            'status': true,
+            'message': 'Signed in successfully',
+            'data': user,
+            'token': token,
+            'id': id
+
+        })
+    } else {
+        res.status(401).send({
+            'status': false,
+            'message': 'Invalid email or password',
+
+        })
+    }
     //     }
     // );
     //console.log('1111')
@@ -166,11 +161,11 @@ async function signInTechie(req, res) {
 //Sign up
 async function signUpTechie(req, res) {
     try {
-        var newPwd =  bcrypt.hashSync(req.body.pwd, 10);
+        var newPwd = bcrypt.hashSync(req.body.pwd, 10);
         //var newPwd = req.body.pwd;
         var techie = await techieFromModel.signUpTechie(req, res, newPwd);
         var uid = JSON.stringify(techie._id);
-        uid = uid.slice(1,-1);
+        uid = uid.slice(1, -1);
         var token = jwt.sign({
             payload: uid,
         },

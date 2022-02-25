@@ -10,14 +10,14 @@ export default function Signin(props) {
     const [pwd, setpwd] = useState('');
 
     //Regex for email and password
-    // var emailRegex = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
+    var emailRegex = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
     // var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
 
     var checkEmail = false, checkPwd = false;
 
     function emailValidation() {
-        if (!email) {
-            alert('Email cannot be empty');
+        if (!email || !emailRegex.test(email)) {
+            alert('Email not in correct format');
             checkEmail = false;
 
         } else {
@@ -59,13 +59,13 @@ export default function Signin(props) {
             localStorage.setItem('token', res.data.token);
             props.history.push('/dashboard');
         }).catch((err) => {
-            alert('Error\nError type:',err);
+            alert('Invalid email or password');
             console.log(err)
         })
     } else {
         console.log(checkEmail+" "+checkPwd);
         console.log(email, pwd);
-        alert('Fields cannot be empty');
+        alert('Invalid email or password');
     }
         
     }
