@@ -107,7 +107,7 @@ async function signInTechie(req, res) {
     //     req.body.pwd,
     //     user.pwd,
     //     (err, isValid) => {
-            if(req.body.pwd){
+            if(user && bcrypt.compareSync(req.body.pwd, user.pwd)){
                 console.log("stringify",JSON.stringify(user._id));
                 var uid = JSON.stringify(user._id);
                 uid = uid.slice(1,-1);
@@ -136,7 +136,7 @@ async function signInTechie(req, res) {
                 res.status(500).send({
                     'status': false,
                     'message': 'Invalid email or password',
-                    'error' : err
+                    
                 })
             }
     //     }
@@ -166,8 +166,8 @@ async function signInTechie(req, res) {
 //Sign up
 async function signUpTechie(req, res) {
     try {
-        //var newPwd = await bcrypt.hash(req.body.pwd, 10);
-        var newPwd = req.body.pwd;
+        var newPwd =  bcrypt.hashSync(req.body.pwd, 10);
+        //var newPwd = req.body.pwd;
         var techie = await techieFromModel.signUpTechie(req, res, newPwd);
         var uid = JSON.stringify(techie._id);
         uid = uid.slice(1,-1);

@@ -10,23 +10,27 @@ export default function Signin(props) {
     const [pwd, setpwd] = useState('');
 
     //Regex for email and password
-    var emailRegex = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
-    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
+    // var emailRegex = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
+    // var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
 
-    var checkVariable = true;
+    var checkEmail = false, checkPwd = false;
 
     function emailValidation() {
-        if (!emailRegex.test(email)) {
-            alert('Email not in correct format');
-            checkVariable = false;
+        if (!email) {
+            alert('Email cannot be empty');
+            checkEmail = false;
 
+        } else {
+            checkEmail = true;
         }
     }
 
     function pwdValidation() {
-        if (!passwordRegex.test(pwd)) {
+        if (!pwd) {
             alert('Password not in correct format');
-            checkVariable = false;
+            checkPwd = false;
+        } else {
+            checkPwd = true;
         }
     }
 
@@ -40,14 +44,27 @@ export default function Signin(props) {
 
     //Sends the entered data for sigin
     function signInUser(){
+        emailValidation();
+        pwdValidation();
+
+        if(checkEmail && checkPwd){
         axios.post("http://localhost:9898/signin",{
             email:email,
             pwd:pwd
         }).then((res) => {
             console.log('success', res);
             localStorage.setItem('token', res.data.token);
+            props.history.push('/dashboard');
+        }).catch((err) => {
+            alert('Error\nError type:',err);
+            console.log(err)
         })
-        props.history.push('/dashboard');
+    } else {
+        console.log(checkEmail+" "+checkPwd);
+        console.log(email, pwd);
+        alert('Fields cannot be empty');
+    }
+        
     }
 
     //Redirects to sign up page
@@ -66,12 +83,12 @@ export default function Signin(props) {
                 <label className='label'>
                     Email
                 </label>
-                <input onChange={handleEmail} className='input' value={email} type='email' onBlur={emailValidation} />
+                <input onChange={handleEmail} className='input' value={email} type='email'  />
 
                 <label className='label'>
                     pwd
                 </label>
-                <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation} />
+                <input onChange={handlepwd} className='input' value={pwd} type='password' />
             </form>
             <button className='submitButton' onClick={signInUser}>Submit</button>
             <div>

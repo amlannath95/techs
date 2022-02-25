@@ -3,6 +3,9 @@ import axios from 'axios';
 import React from 'react';
 import './App.css'
 
+var checkEmail = false, checkPwd = false, checkName = false,
+        checkDob = false, checkContact = false, checkLang = false;
+
 export default function Signup(props) {
 
     //States for signup
@@ -21,61 +24,65 @@ export default function Signup(props) {
 
     var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
 
-    var checkEmail = false, checkPwd = false, checkName = false,
-        checkDob = false, checkContact = false, checkLang = false;
+    
 
     function emailValidation() {
-        if (!emailRegex.test(email)) {
-            alert('Email not in correct format');
-            checkEmail = false;
-
-        } else {
+        if (emailRegex.test(email)) {
             checkEmail = true;
+            console.log("in if");
+        } else {
+            checkEmail = false;
+            alert('Email not in correct format');
+            console.log("in else");
+
         }
     }
 
     function pwdValidation() {
-        if (!passwordRegex.test(pwd)) {
-            alert('Password not in correct format');
-            checkPwd = false;
-        } else {
+        if (passwordRegex.test(pwd)) {
             checkPwd = true;
+        } else {
+            checkPwd = false;
+            alert('Password not in correct format');
         }
     }
 
     function dobValidation() {
-        if (!dobRegex.test(dob)) {
-            alert('DOB not in correct format');
-            checkDob = false;
-        } else {
+        if (dobRegex.test(dob)) {
             checkDob = true;
+        } else {
+            checkDob = false;
+            alert('DOB not in correct format');
+
         }
     }
 
     function contactValidation() {
-        if (!contactRegex.test(contact)) {
-            alert('Contact number not in correct format');
-            checkContact = false;
-        } else {
+        if (contactRegex.test(contact)) {
             checkContact = true;
+        } else {
+            checkContact = false;
+            alert('Contact number not in correct format');
+
         }
     }
 
     function nameValidation() {
-        if (!name) {
-            alert('Name cannot be empty');
-            checkName = false;
-        } else {
+        if (name) {
             checkName = true;
+        } else {
+            checkName = false;
+            alert('Name cannot be empty');
         }
     }
 
     function langValidation() {
-        if (!lang) {
+        if (lang) {
+            
+            checkLang = true;
+        } else {
             alert('Lang cannot be empty');
             checkLang = false;
-        } else {
-            checkLang = true;
         }
     }
 
@@ -104,6 +111,13 @@ export default function Signup(props) {
     }
 
     const signUpUser = () => {
+            emailValidation();
+            nameValidation();
+            pwdValidation();
+            dobValidation();
+            langValidation();
+            contactValidation();
+
         if (checkContact && checkDob && checkEmail && checkLang && checkName && checkPwd) {
             axios.post("http://localhost:9898/signup", {
                 email: email,
@@ -121,6 +135,8 @@ export default function Signup(props) {
             //After suucessful signup it will redirect to the dashboard page
             props.history.push('/dashboard')
         } else {
+            console.log(checkContact+" "+checkDob+" "+checkEmail+" "+checkLang+" "+checkName+" "+checkPwd)
+            console.log(contact,dob,email,lang, name,pwd);
             alert('Enter correct data');
         }
     }
