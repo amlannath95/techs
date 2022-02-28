@@ -130,10 +130,15 @@ export default function Signup(props) {
                 console.log("Signup", res.data.token);
                 localStorage.setItem('token', res.data.token);
                 console.log('success', res);
+               
+                //After suucessful signup it will redirect to the dashboard page
+                props.history.push('/dashboard')
+            }).catch((err) => {
+                console.log(err);
+                alert('Email already exists');
             })
 
-            //After suucessful signup it will redirect to the dashboard page
-            props.history.push('/dashboard')
+            
         } else {
             console.log(checkContact+" "+checkDob+" "+checkEmail+" "+checkLang+" "+checkName+" "+checkPwd)
             console.log(contact,dob,email,lang, name,pwd);

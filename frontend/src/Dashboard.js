@@ -30,6 +30,7 @@ export default  function Dashboard(props){
             <button onClick={signOut}>Sign Out</button>
             <div className='userData'>
                 <table>
+                    <tbody>
                     <tr>
                         <td>
                             {userData && userData.data.data.email}
@@ -55,6 +56,7 @@ export default  function Dashboard(props){
                             {userData && userData.data.data.lang}
                         </td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
