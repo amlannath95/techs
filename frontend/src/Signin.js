@@ -9,30 +9,30 @@ export default function Signin(props) {
     const [email, setEmail] = useState('');
     const [pwd, setpwd] = useState('');
 
-    //Regex for email and password
     var emailRegex = /^([a-z\d\.-]+)@([a-z]+)\.([a-z]{2,5})(\.[a-z]{2,8})?$/;
-    // var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*~?<>])[a-zA-Z0-9!@#$%^&*~?<>]{8,20}$/;
 
     var checkEmail = false, checkPwd = false;
 
     function emailValidation() {
+        var error = document.getElementById('mail');
         if (!email || !emailRegex.test(email)) {
-            //alert('Email not in correct format');
-            var error = document.getElementById('emailError');
             error.textContent='Email not in correct format'
             error.style.color='red';
-            checkEmail = false;
-
+            checkEmail = false; 
         } else {
+            error.textContent=''
             checkEmail = true;
         }
     }
 
     function pwdValidation() {
+        var error = document.getElementById('pwdError');
         if (!pwd) {
-            alert('Password not in correct format');
+            error.textContent='Password cannot be empty'
+            error.style.color='red';
             checkPwd = false;
         } else {
+            error.textContent=''
             checkPwd = true;
         }
     }
@@ -90,8 +90,8 @@ export default function Signin(props) {
                 <label className='label'>
                     Email
                 </label>
-                <input onChange={handleEmail} className='input' value={email} type='email' onBlur={emailValidation} />
-                <span id = "emailError"></span>
+                <input onChange={handleEmail} className='input' value={email} type='email'  onBlur={emailValidation} />
+                <div id = "mail"></div>
                 </div>
 
                 <div>
@@ -99,7 +99,8 @@ export default function Signin(props) {
                     pwd
                 </label>
                 <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation}/>
-                <span id='pwdError'></span>
+                <div id = "pwdError"></div>
+            
                 </div>
             </form>
             <button className='submitButton' onClick={signInUser}>Submit</button>
