@@ -17,7 +17,10 @@ export default function Signin(props) {
 
     function emailValidation() {
         if (!email || !emailRegex.test(email)) {
-            alert('Email not in correct format');
+            //alert('Email not in correct format');
+            var error = document.getElementById('emailError');
+            error.textContent='Email not in correct format'
+            error.style.color='red';
             checkEmail = false;
 
         } else {
@@ -83,15 +86,21 @@ export default function Signin(props) {
                 </h1>
             </div>
             <form>
+                <div>
                 <label className='label'>
                     Email
                 </label>
                 <input onChange={handleEmail} className='input' value={email} type='email' onBlur={emailValidation} />
+                <span id = "emailError"></span>
+                </div>
 
+                <div>
                 <label className='label'>
                     pwd
                 </label>
                 <input onChange={handlepwd} className='input' value={pwd} type='password' onBlur={pwdValidation}/>
+                <span id='pwdError'></span>
+                </div>
             </form>
             <button className='submitButton' onClick={signInUser}>Submit</button>
             <div>

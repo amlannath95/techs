@@ -91,17 +91,20 @@ async function deleteTechie(req, res) {
 
 //Sign in
 async function signInTechie(req, res) {
+    //Finds if the email already exists in the database
     var user = await techieFromModel.techieData.findOne({
         email: req.body.email,
     })
 
+    //If email does not exist
     if (!user) {
-        res.status(500).send({
+        return res.status(401).send({
             message:
                 'Invalid login email'
         })
     }
 
+    //If email exists and password matches
     if (user && bcrypt.compareSync(req.body.pwd, user.pwd)) {
         console.log("stringify", JSON.stringify(user._id));
         var uid = JSON.stringify(user._id);
@@ -162,9 +165,25 @@ async function signInTechie(req, res) {
 async function signUpTechie(req, res) {
     try {
         var newPwd = bcrypt.hashSync(req.body.pwd, 10);
-        //var newPwd = req.body.pwd;
+
+        //Finds if the email already exists in the database
+        var user = await techieFromModel.techieData.findOne({
+            email: req.body.email,
+        })
+
+        //If email exits
+        if(user){
+            return res.status(400).send({
+                message:"Email already registered"
+            });
+        }
+
         var techie = await techieFromModel.signUpTechie(req, res, newPwd);
+
+        //Stores the user id
         var uid = JSON.stringify(techie._id);
+
+        //Removes the quotes from the id
         uid = uid.slice(1, -1);
         var token = jwt.sign({
             payload: uid,

@@ -17,7 +17,8 @@ function createSchema(){
         },
         email:{
             type:String,
-            required:true
+            required:true,
+            unique:true
         },
         dob:{
             type:String,
