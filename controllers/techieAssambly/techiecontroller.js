@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
+var async = require('async');
+
 var techieFromModel = require('../../models/onetech');
 var techieFromResponse = require('../../utility/response');
 
@@ -165,33 +167,48 @@ async function signInTechie(req, res) {
 async function signUpTechie(req, res) {
     try {
         var newPwd = bcrypt.hashSync(req.body.pwd, 10);
+        
+        async.waterfall([
+            async function(callback){
+                //Finds if email is already present in the database
+                var check = await techieFromModel.techieData.findOne({email:req.body.email});
+                console.log('rendezvous 1', check)
+                callback(null, check);
+            }
+        ], async function(err, check){
+            if(err){
+                console.log(err);
+                return res.status(401).send({
+                    message:"Error while sign up"
+                })
+            }
+            //If email already exist
+            if(check){
+                console.log('rendezvous 2', check)
+                return res.status(400).send({
+                    message:"Email already registered"
+                });
+            } else if(!check){
+                console.log('rendezvous 3', check)
+                //Creates the user
+                var techie = await techieFromModel.signUpTechie(req, res, newPwd);
 
-        //Finds if the email already exists in the database
-        var user = await techieFromModel.techieData.findOne({
-            email: req.body.email,
-        })
+                //Stores the user id
+                var uid = JSON.stringify(techie._id);
 
-        //If email exits
-        if(user){
-            return res.status(400).send({
-                message:"Email already registered"
-            });
+                //Removes the quotes from the id
+                uid = uid.slice(1, -1);
+                var token = jwt.sign({
+                    payload: uid,
+                },
+                    'secretkey123',
+                    { expiresIn: "1h" }
+                );
+                await techieFromResponse.signUpTechie(res, req, techie, token, uid);
+            }
         }
+        )
 
-        var techie = await techieFromModel.signUpTechie(req, res, newPwd);
-
-        //Stores the user id
-        var uid = JSON.stringify(techie._id);
-
-        //Removes the quotes from the id
-        uid = uid.slice(1, -1);
-        var token = jwt.sign({
-            payload: uid,
-        },
-            'secretkey123',
-            { expiresIn: "1h" }
-        );
-        await techieFromResponse.signUpTechie(res, req, techie, token, uid);
     } catch (error) {
         res.status(500).send({
             message:
