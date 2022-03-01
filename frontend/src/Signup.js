@@ -128,7 +128,8 @@ export default function Signup(props) {
             dobValidation();
             langValidation();
             contactValidation();
-
+        
+        //If all the fields are filled in valid format
         if (checkContact && checkDob && checkEmail && checkLang && checkName && checkPwd) {
             var error = document.getElementById('submitError');
             axios.post("http://localhost:9898/signup", {

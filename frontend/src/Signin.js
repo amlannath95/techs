@@ -15,11 +15,15 @@ export default function Signin(props) {
 
     function emailValidation() {
         var error = document.getElementById('mail');
+
+        //If invalid or empty email field
         if (!email || !emailRegex.test(email)) {
+            //Error is shown below the name input field
             error.textContent='Email not in correct format'
             error.style.color='red';
             checkEmail = false; 
         } else {
+            //Previous error messages(if any) disappears
             error.textContent='';
             checkEmail = true;
         }
@@ -27,11 +31,15 @@ export default function Signin(props) {
 
     function pwdValidation() {
         var error = document.getElementById('pwdError');
+
+        //If password field is empty
         if (!pwd) {
+            ////Error is shown below the password input field
             error.textContent='Password cannot be empty'
             error.style.color='red';
             checkPwd = false;
         } else {
+            //Previous error messages(if any) disappears
             error.textContent=''
             checkPwd = true;
         }
@@ -55,6 +63,7 @@ export default function Signin(props) {
         console.log(email, pwd);
         console.log(checkEmail, checkPwd);
 
+        //If email is in valid format and password is not empty
         if(checkEmail && checkPwd){
         axios.post("http://localhost:9898/signin",{
             email:email,
@@ -63,6 +72,8 @@ export default function Signin(props) {
             console.log('success', res);
             localStorage.setItem('token', res.data.token);
             error.textContent='';
+
+            //Page redirects to dashboard
             props.history.push('/dashboard');
         }).catch((err) => {
             error.textContent='Invalid email or password';
