@@ -20,7 +20,7 @@ export default function Signin(props) {
             error.style.color='red';
             checkEmail = false; 
         } else {
-            error.textContent=''
+            error.textContent='';
             checkEmail = true;
         }
     }
@@ -50,6 +50,8 @@ export default function Signin(props) {
         emailValidation();
         pwdValidation();
 
+        var error = document.getElementById('submitError');
+
         console.log(email, pwd);
         console.log(checkEmail, checkPwd);
 
@@ -60,15 +62,18 @@ export default function Signin(props) {
         }).then((res) => {
             console.log('success', res);
             localStorage.setItem('token', res.data.token);
+            error.textContent='';
             props.history.push('/dashboard');
         }).catch((err) => {
-            alert('Invalid email or password');
+            error.textContent='Invalid email or password';
+            error.style.color='red';
             console.log(err)
         })
     } else {
         console.log(checkEmail+" "+checkPwd);
         console.log(email, pwd);
-        alert('Invalid email or password');
+        error.textContent='Invalid email or password';
+        error.style.color='red';
     }
         
     }
@@ -104,8 +109,10 @@ export default function Signin(props) {
                 </div>
             </form>
             <button className='submitButton' onClick={signInUser}>Submit</button>
+            <div id='submitError'></div>
             <div>
                 <button onClick={signUp}>Sign UP!</button>
+                
             </div>
         </div>
     );
